@@ -23,6 +23,16 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
+//Atualizar Clientes
+router.put('/:id', async (req, res) => {
+    try {
+        const cliente = await Cliente.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        res.json(cliente)
+    } catch (error) {
+        res.status(500).json({error: "Erro ao atualizar cliente"})
+    }
+})
+
 //Listar Cliente
 router.get('/', async (req, res) => {
     const clientes = await Cliente.find();

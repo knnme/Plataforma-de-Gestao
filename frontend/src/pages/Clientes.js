@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 
 function Clientes() {
     const [clientes, setClientes] = useState([])
+    const [editando, setEditando] = useState(null)
     const [nome, setNome] = useState('')
     const [email, setEmail] = useState('')
     const [telefone, setTelefone] = useState('')
@@ -33,6 +34,24 @@ function Clientes() {
             setTelefone('')
         } catch (error) {
             console.error("Erro ao cadastrar cliente:", error)
+        }
+    }
+
+    //Função para editar cliente
+    const iniciarEdicao = (cliente) => {
+        setEditando(cliente._id)
+        setNome(cliente.nome)
+        setEmail(cliente.email)
+        setTelefone(cliente.telefone)
+    }
+
+    const salvarEdicao = async (id) => {
+        try {
+            await api.put(`/clientes/${id}`, {nome, email, telefone})
+            setEditando(null)
+            carregarClientes()
+        } catch (error) {
+            console.error("Erro ao atualizar cliente", error)
         }
     }
 
@@ -79,6 +98,20 @@ function Clientes() {
             <ul>
                 {clientes.map(cliente => (
                     <li key={cliente.id}>
+                        {editando === cliente.id ? (
+                            <>
+                                <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
+                                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                                <input type="text" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
+                                <button onClick={() => salvarEdicao(cliente._id)}>Salvar</button>
+                                <button onClick={() => setEditando(null)}>Cancelar</button>
+                            </>
+                        ) : (
+                            <>
+                                {cliente.nome} - {cliente.email}
+                                <button onClick={() => iniciarEdicao(cliente)}>Editar</button>
+                            </>
+                        )}
                         {cliente.nome} - {cliente.email} - {cliente.telefone} 
                         <button onClick={() => excluirCliente(cliente._id)}>Excluir</button></li>
                 ))}

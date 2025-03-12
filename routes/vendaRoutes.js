@@ -23,6 +23,16 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
+//Atualizar vendas
+router.put('/:id', async (req, res) => {
+    try {
+        const venda = await Venda.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        req.json(venda)
+    } catch (error) {
+        res.status(500).json({error: "Erro ao atualizar venda"})
+    }
+})
+
 // Listar Vendas
 router.get('/', async (req, res) => {
     try {
