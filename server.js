@@ -15,7 +15,9 @@ const Vendas = require('./models/Venda');
 const clienteRoutes = require('./routes/clienteRoutes');
 const produtoRoutes =  require('./routes/produtoRoutes');
 const vendaRoutes = require('./routes/vendaRoutes');
+const statsRoutes = require('./routes/statsRoutes');
 
+app.use('/stats', statsRoutes);
 app.use('/clientes', clienteRoutes);
 app.use('/produtos', produtoRoutes);
 app.use('/vendas', vendaRoutes);
