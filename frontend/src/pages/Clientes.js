@@ -97,8 +97,8 @@ function Clientes() {
             {/* Lista de Clientes */}
             <ul>
                 {clientes.map(cliente => (
-                    <li key={cliente.id}>
-                        {editando === cliente.id ? (
+                    <li key={cliente._id}>
+                        {editando === cliente._id ? (
                             <>
                                 <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
                                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -110,10 +110,10 @@ function Clientes() {
                             <>
                                 {cliente.nome} - {cliente.email}
                                 <button onClick={() => iniciarEdicao(cliente)}>Editar</button>
+                                <button onClick={() => excluirCliente(cliente._id)}>Excluir</button>
                             </>
                         )}
-                        {cliente.nome} - {cliente.email} - {cliente.telefone} 
-                        <button onClick={() => excluirCliente(cliente._id)}>Excluir</button></li>
+                    </li>
                 ))}
             </ul>
             <div>

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 
 function Produtos() {
     const [produtos, setProdutos] = useState([]);
+    const [editando, setEditando] = useState(null)
     const [nome, setNome] = useState('');
     const [preco, setPreco] = useState('');
     const [estoque, setEstoque] = useState('');
@@ -46,6 +47,24 @@ function Produtos() {
         }
     }
 
+    //Função para editar produtos
+    const iniciarEdicao = (produto) => {
+        setEditando(produto._id);
+        setNome(produto.nome);
+        setPreco(produto.preco);
+        setEstoque(produto.estoque);
+    };
+    
+    const salvarEdicao = async (id) => {
+        try {
+            await api.put(`/produtos/${id}`, { nome, preco, estoque });
+            setEditando(null);
+            carregarProdutos();
+        } catch (error) {
+            console.error("Erro ao atualizar produto:", error);
+        }
+    };
+
     return (
         <div>
             <h1>Lista de Produtos</h1>
@@ -80,9 +99,23 @@ function Produtos() {
             <ul>
                 {produtos.map(produto => (
                     <li key={produto._id}>
-                        {produto.nome} - R$ {produto.preco} - Estoque: {produto.estoque}
-                        <button onClick={() => excluirProduto(produto._id)}>Excluir</button>
-                    </li>
+                    {editando === produto._id ? (
+                        <>
+                            <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
+                            <input type="text" value={preco} onChange={(e) => setPreco(e.target.value)} />
+                            <input type="text" value={estoque} onChange={(e) => setEstoque(e.target.value)} />
+                            <button onClick={() => salvarEdicao(produto._id)}>Salvar</button>
+                            <button onClick={() => setEditando(null)}>Cancelar</button>
+                        </>
+                    ) : (
+                        <>
+                            {produto.nome} - R$ {produto.preco} - Estoque: {produto.estoque}
+                            <button onClick={() => iniciarEdicao(produto)}>Editar</button>
+                            <button onClick={() => excluirProduto(produto._id)}>Excluir</button>
+                        </>
+                    )}
+                </li>
+                    
                 ))}
             </ul>
             <div>
