@@ -22,9 +22,9 @@ app.use('/vendas', vendaRoutes);
 
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log("Banco de dados conectado!"))
-    .catch(err => console.error("Erro ao conectar ao MongoDB:", err));
-
+    .then(() => console.log("Banco de dados conectado ao MongoDB Atlas!"))
+    .catch(err => console.error("Erro ao conectar ao MongoDB:", err)); 
+    
 app.listen(process.env.PORT, () => {
     console.log(`Servidor rodando na porta ${process.env.PORT}`);
 });
