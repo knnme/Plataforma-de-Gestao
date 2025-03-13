@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
     try {
         const vendas = await Venda.find()
             .populate({ path: 'cliente', select: 'nome' })
-            .populate({ path: 'produtos', select: 'nome preco', strictPopulate: false }); // 🚀 Ajuste aqui
+            .populate({ path: 'produtos', select: 'nome preco', strictPopulate: false });
 
         res.json(vendas);
     } catch (error) {

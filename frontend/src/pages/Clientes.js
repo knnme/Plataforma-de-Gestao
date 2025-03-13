@@ -1,126 +1,121 @@
-import React, {useEffect, useState} from 'react'
-import api from '../services/api'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import api from '../services/api';
+import { Table, Button, Container, Form } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 function Clientes() {
-    const [clientes, setClientes] = useState([])
-    const [editando, setEditando] = useState(null)
-    const [nome, setNome] = useState('')
-    const [email, setEmail] = useState('')
-    const [telefone, setTelefone] = useState('')
+    const [clientes, setClientes] = useState([]);
+    const [editando, setEditando] = useState(null);
+    const [nome, setNome] = useState('');
+    const [email, setEmail] = useState('');
+    const [telefone, setTelefone] = useState('');
 
-    //Buscar clientes da API
     useEffect(() => {
-        carregarClientes()   
-    }, [])
+        carregarClientes();
+    }, []);
 
     const carregarClientes = async () => {
         try {
-            const response = await api.get('/clientes')
-            setClientes(response.data)
+            const response = await api.get('/clientes');
+            setClientes(response.data);
         } catch (error) {
-            console.error("Erro ao buscar clientes:", error)
+            console.error("Erro ao buscar clientes:", error);
         }
-    }
+    };
 
-    //Função para cadastrar um novo cliente
     const cadastrarCliente = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         try {
-            const response = await api.post ('/clientes', {nome, email, telefone })
-            setClientes([...clientes, response.data]) //Atualiza a lista
-            setNome('')
-            setEmail('')
-            setTelefone('')
-        } catch (error) {
-            console.error("Erro ao cadastrar cliente:", error)
-        }
-    }
+            if (editando) {
+                // Se estiver editando, atualiza o cliente
+                await api.put(`/clientes/${editando}`, { nome, email, telefone });
+            } else {
+                // Se não estiver editando, cadastra um novo cliente
+                const response = await api.post('/clientes', { nome, email, telefone });
+                setClientes([...clientes, response.data]); 
+            }
 
-    //Função para editar cliente
+            setEditando(null); 
+            setNome('');
+            setEmail('');
+            setTelefone('');
+            carregarClientes(); 
+
+        } catch (error) {
+            console.error("Erro ao cadastrar/editar cliente:", error);
+        }
+    };
+
     const iniciarEdicao = (cliente) => {
-        setEditando(cliente._id)
-        setNome(cliente.nome)
-        setEmail(cliente.email)
-        setTelefone(cliente.telefone)
-    }
+        setEditando(cliente._id);
+        setNome(cliente.nome);
+        setEmail(cliente.email);
+        setTelefone(cliente.telefone);
+    };
 
-    const salvarEdicao = async (id) => {
-        try {
-            await api.put(`/clientes/${id}`, {nome, email, telefone})
-            setEditando(null)
-            carregarClientes()
-        } catch (error) {
-            console.error("Erro ao atualizar cliente", error)
-        }
-    }
-
-    //Excluir cliente
     const excluirCliente = async (id) => {
         try {
-            await api.delete(`/clientes/${id}`)
-            setClientes(clientes.filter(cliente => cliente._id !== id))
+            await api.delete(`/clientes/${id}`);
+            setClientes(clientes.filter(cliente => cliente._id !== id));
         } catch (error) {
-            console.error("Erro ao excluir cliente", error)
+            console.error("Erro ao excluir cliente:", error);
         }
-    }
+    };
 
     return (
-        <div>
-            <h1>Lista de Clientes</h1>
+        <Container className="mt-5">
+            <h1 className="mb-4 text-center">Gerenciar Clientes</h1>
 
-            {/*Formulário de Cadastri*/}
-            <form onSubmit={cadastrarCliente}>
-                <input
-                    type='text'
-                    placeholder='Nome'
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
-                    required
-                />
-                <input
-                    type='text'
-                    placeholder='Email'
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <input
-                    type='text'
-                    placeholder='Telefone'
-                    value={telefone}
-                    onChange={(e) => setTelefone(e.target.value)}
-                />
-                <button type='submit'>Cadastrar</button>
-            </form>
+            {/* Formulário de Cadastro/Edição */}
+            <Form onSubmit={cadastrarCliente} className="mb-4 p-4 border rounded bg-light">
+                <h4>{editando ? "Editar Cliente" : "Adicionar Cliente"}</h4>
+                <Form.Group className="mb-3">
+                    <Form.Label>Nome</Form.Label>
+                    <Form.Control type="text" value={nome} onChange={(e) => setNome(e.target.value)} required />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>E-mail</Form.Label>
+                    <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Telefone</Form.Label>
+                    <Form.Control type="text" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
+                </Form.Group>
+                <Button variant={editando ? "success" : "primary"} type="submit">
+                    {editando ? "Salvar Edição" : "Cadastrar"}
+                </Button>{' '}
+                {editando && <Button variant="secondary" onClick={() => setEditando(null)}>Cancelar</Button>}
+            </Form>
 
-            {/* Lista de Clientes */}
-            <ul>
-                {clientes.map(cliente => (
-                    <li key={cliente._id}>
-                        {editando === cliente._id ? (
-                            <>
-                                <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
-                                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                                <input type="text" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
-                                <button onClick={() => salvarEdicao(cliente._id)}>Salvar</button>
-                                <button onClick={() => setEditando(null)}>Cancelar</button>
-                            </>
-                        ) : (
-                            <>
-                                {cliente.nome} - {cliente.email}
-                                <button onClick={() => iniciarEdicao(cliente)}>Editar</button>
-                                <button onClick={() => excluirCliente(cliente._id)}>Excluir</button>
-                            </>
-                        )}
-                    </li>
-                ))}
-            </ul>
-            <div>
-                <h3><Link to='/'>Voltar</Link></h3>
+            {/* Tabela de Clientes */}
+            <Table striped bordered hover responsive>
+                <thead className="table-dark">
+                    <tr>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Telefone</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {clientes.map(cliente => (
+                        <tr key={cliente._id}>
+                            <td>{cliente.nome}</td>
+                            <td>{cliente.email}</td>
+                            <td>{cliente.telefone}</td>
+                            <td>
+                                <Button onClick={() => iniciarEdicao(cliente)}>Editar</Button>{' '}
+                                <Button variant="danger" onClick={() => excluirCliente(cliente._id)}>Excluir</Button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+            <div className='text-center mt-4'>
+                <Link to='/' className='btn btn-secondary'>Voltar</Link>
             </div>
-        </div>
-    )
+        </Container>
+    );
 }
 
-export default Clientes
+export default Clientes;
