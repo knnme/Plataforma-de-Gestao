@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const VendaSchema = new mongoose.Schema({
     cliente: { type: mongoose.Schema.Types.ObjectId, ref: 'Cliente', required: true },
     produtos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Produto', required: true }],
-    total: { type: Number, required: true },
+    total: { type: Number, required: true, min: 1 },
     data: { type: Date, default: Date.now }
 });
 
