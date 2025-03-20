@@ -55,7 +55,6 @@ function Dashboard() {
                     <Button variant="danger" onClick={logout}>Sair</Button>
                 </Col>
             </Row>
-
         </Container>
     );
 }
