@@ -44,6 +44,33 @@ function Vendas() {
         }
     };
 
+    const cadastrarVenda = async (e) => {
+        e.preventDefault()
+
+        if (!cliente || !produto || !quantidade) {
+            alert("Por favor, preencha todos os campos.")
+            return
+        }
+
+        try {
+            await api.post("/vendas", {
+                cliente,
+                produto,
+                quantidade: parseInt(quantidade, 10)
+            })
+
+            setCliente("")
+            setProduto("")
+            setQuantidade("")
+            carregarVendas() //Atualiza a lista após o cadastro
+
+            alert("Venda registrada com sucesso!")
+        } catch (error) {
+            console.error("Erro ao registrar venda:", error)
+            alert("Erro ao registrar venda. Tente novamente.")
+        }
+    }
+
     return (
         <Container className="mt-5">
             <Card className="p-4 shadow">
@@ -67,7 +94,7 @@ function Vendas() {
                         <Form.Label>Quantidade</Form.Label>
                         <Form.Control type="number" value={quantidade} onChange={(e) => setQuantidade(e.target.value)} />
                     </Form.Group>
-                    <Button variant="primary" className="mt-3">Registrar Venda</Button>
+                    <Button onClick={cadastrarVenda} variant="primary" className="mt-3">Registrar Venda</Button>
                 </Form>
 
                 <Table striped bordered hover responsive>

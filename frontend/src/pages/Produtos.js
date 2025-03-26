@@ -8,6 +8,7 @@ function Produtos() {
     const [nome, setNome] = useState("");
     const [preco, setPreco] = useState("");
     const [estoque, setEstoque] = useState("");
+    const [editando, setEditando] = useState(null);
 
     useEffect(() => {
         carregarProdutos();
@@ -21,6 +22,40 @@ function Produtos() {
             console.error("Erro ao buscar produtos:", error);
         }
     };
+
+    const excluirProduto = async (id) => {
+        if (!window.confirm("Tem certeza que deseja excluir este produto?")) return;
+
+        try {
+            await api.delete(`/produtos/${id}`);
+            setProdutos(prevProdutos => prevProdutos.filter(produto => produto._id !== id));
+        } catch (error) {
+            console.error("Erro ao excluir produto:", error);
+        }
+    }
+
+    const editarProduto = (produto) => {
+        setEditando(produto._id)
+        setNome(produto.nome)
+        setPreco(produto.email)
+        setEstoque(produto.telefone)
+    }
+
+    const cadastrarOuEditarProduto = async (e) => {
+        e.preventDefault()
+
+        if (editando) {
+            await api.put(`/produtos/${editando}`, {nome, preco, estoque})
+        } else {
+            await api.post(`produtos`, {nome, preco, estoque})
+        }
+
+        setNome("")
+        setPreco("")
+        setEstoque("")
+        setEditando(null)
+        carregarProdutos()
+    }
 
     return (
         <Container className="mt-5">
@@ -39,7 +74,7 @@ function Produtos() {
                         <Form.Label>Estoque</Form.Label>
                         <Form.Control type="number" value={estoque} onChange={(e) => setEstoque(e.target.value)} />
                     </Form.Group>
-                    <Button variant="primary" className="mt-3">Salvar Produto</Button>
+                    <Button onClick={cadastrarOuEditarProduto} variant="primary" className="mt-3">{editando ? "Salvar" : "Cadastrar"}</Button>
                 </Form>
 
                 <Table striped bordered hover responsive>
@@ -58,8 +93,8 @@ function Produtos() {
                                 <td>R$ {produto.preco.toFixed(2)}</td>
                                 <td>{produto.estoque}</td>
                                 <td>
-                                    <Button variant="warning" size="sm" className="me-2">Editar</Button>
-                                    <Button variant="danger" size="sm">Excluir</Button>
+                                    <Button onClick={() => editarProduto(produto)} variant="warning" size="sm" className="me-2">Editar</Button>
+                                    <Button onClick={() => excluirProduto(produto._id)} variant="danger" size="sm">Excluir</Button>
                                 </td>
                             </tr>
                         ))}

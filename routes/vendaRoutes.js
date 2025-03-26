@@ -4,6 +4,8 @@ const Venda = require('../models/Venda');
 
 // Criar Venda
 router.post('/', async (req, res) => {
+    const { cliente, produto, quantidade } = req.body;
+
     try {
         const venda = new Venda(req.body);
         await venda.save();

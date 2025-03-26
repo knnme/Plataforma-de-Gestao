@@ -8,6 +8,7 @@ function Clientes() {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [telefone, setTelefone] = useState("");
+    const [editando, setEditando] = useState(null);
 
     useEffect(() => {
         carregarClientes();
@@ -21,6 +22,40 @@ function Clientes() {
             console.error("Erro ao buscar clientes:", error);
         }
     };
+
+    const excluirCliente = async (id) => {
+        if (!window.confirm("Tem certeza que deseja excluir este cliente?")) return;
+
+        try {
+            await api.delete(`/clientes/${id}`);
+            setClientes(prevClientes => prevClientes.filter(cliente => cliente._id !== id));
+        } catch (error) {
+            console.error("Erro ao excluir cliente:", error);
+        }
+    }
+
+    const editarCliente = (cliente) => {
+        setEditando(cliente._id)
+        setNome(cliente.nome)
+        setEmail(cliente.email)
+        setTelefone(cliente.telefone)
+    }
+
+    const cadastrarOuEditarCliente = async (e) => {
+        e.preventDefault()
+
+        if (editando) {
+            await api.put(`/clientes/${editando}`, {nome, email, telefone})
+        } else {
+            await api.post(`clientes`, {nome, email, telefone})
+        }
+
+        setNome("")
+        setEmail("")
+        setTelefone("")
+        setEditando(null)
+        carregarClientes()
+    }
 
     return (
         <Container className="mt-5">
@@ -39,7 +74,7 @@ function Clientes() {
                         <Form.Label>Telefone</Form.Label>
                         <Form.Control type="text" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
                     </Form.Group>
-                    <Button variant="primary" className="mt-3">Salvar</Button>
+                    <Button onClick={cadastrarOuEditarCliente} variant="primary" className="mt-3"> {editando ? "Atualizar Cliente" : "Cadastrar Cliente"}</Button>
                 </Form>
 
                 <Table striped bordered hover responsive>
@@ -58,8 +93,8 @@ function Clientes() {
                                 <td>{cliente.email}</td>
                                 <td>{cliente.telefone}</td>
                                 <td>
-                                    <Button variant="warning" size="sm" className="me-2">Editar</Button>
-                                    <Button variant="danger" size="sm">Excluir</Button>
+                                    <Button onClick={() => editarCliente(cliente)} variant="warning" size="sm" className="me-2">Editar</Button>
+                                    <Button onClick={() => excluirCliente(cliente._id)} variant="danger" size="sm">Excluir</Button>
                                 </td>
                             </tr>
                         ))}
