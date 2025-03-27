@@ -28,7 +28,7 @@ Sistema web para gerenciamento de clientes, produtos e vendas, com autenticaçã
 ---
 
 ## 🎨 Capturas de Tela
-📸 ![](https://cdn.discordapp.com/attachments/884234204794200145/1354503032653615215/image.png?ex=67e586c0&is=67e43540&hm=fd788223a2b85b156b6a259e795d2bfa6c2775072b6cfa9c16457c19ebc65db8&) ![](https://cdn.discordapp.com/attachments/884234204794200145/1354502970036715691/image.png?ex=67e586b1&is=67e43531&hm=ee314d6ebb41a4018483f4b6858c89a6866157c9253c7a5fc2f75e934e9b35ca&)![](https://cdn.discordapp.com/attachments/884234204794200145/1354504997311741962/image.png?ex=67e58894&is=67e43714&hm=04fc8f77fd2df1106e0b77ccb9b742aa9fe58e3f3f4145333456e53098bd64bd&)
+![](https://cdn.discordapp.com/attachments/884234204794200145/1354502970036715691/image.png?ex=67e586b1&is=67e43531&hm=ee314d6ebb41a4018483f4b6858c89a6866157c9253c7a5fc2f75e934e9b35ca&)![](https://cdn.discordapp.com/attachments/884234204794200145/1354504997311741962/image.png?ex=67e58894&is=67e43714&hm=04fc8f77fd2df1106e0b77ccb9b742aa9fe58e3f3f4145333456e53098bd64bd&)
 
 ---
 
