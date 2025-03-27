@@ -21,7 +21,6 @@ Sistema web para gerenciamento de clientes, produtos e vendas, com autenticaçã
 
 ---
 
-
 ## 🌎 Deploy
 - **Frontend:** [Vercel](https://plataforma-de-gestao.vercel.app/)  
 - **Backend:** [Render](https://plataforma-de-gestao.onrender.com/)  
