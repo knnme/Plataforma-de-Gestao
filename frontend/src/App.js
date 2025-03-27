@@ -32,11 +32,10 @@ function App() {
           </Navbar>
         </>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/clientes" element={<ProtectedRoute><Clientes /></ProtectedRoute>} />
-        <Route path="/produtos" element={<ProtectedRoute><Produtos /></ProtectedRoute>} />
-        <Route path="/vendas" element={<ProtectedRoute><Vendas /></ProtectedRoute>} />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/clientes" element={<Clientes />} />
+        <Route path="/produtos" element={<Produtos />} />
+        <Route path="/vendas" element={<Vendas />} />
       </Routes>
     </Router>
   )

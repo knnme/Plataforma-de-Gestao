@@ -120,7 +120,7 @@ function Vendas() {
                     </tbody>
                 </Table>
                 <tbody className='text-center mt-4'>
-                    <Link to='/dashboard' className='btn btn-secondary'>Voltar</Link>
+                    <Link to='/' className='btn btn-secondary'>Voltar</Link>
                 </tbody>
             </Card>
         </Container>
