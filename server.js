@@ -23,8 +23,8 @@ app.use('/produtos', produtoRoutes);
 app.use('/vendas', vendaRoutes);
 app.use(express.urlencoded({ extended: true }));
 
-const authRoutes = require('./routes/authRoutes');
-app.use('/auth', authRoutes);
+// const authRoutes = require('./routes/authRoutes');
+// app.use('/auth', authRoutes);
 
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
