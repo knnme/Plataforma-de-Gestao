@@ -26,10 +26,6 @@ Sistema web para gerenciamento de clientes, produtos e vendas, com autenticaçã
 - **Frontend:** [Vercel](https://plataforma-de-gestao.vercel.app/)  
 - **Backend:** [Render](https://plataforma-de-gestao.onrender.com/)  
 
-## 🔑 Senha de acesso  
-- teste@email.com   
-- 123456
-
 ---
 
 ## 🎨 Capturas de Tela
