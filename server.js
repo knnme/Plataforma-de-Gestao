@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 
 const cors = require('cors');
-app.use(cors());
+app.use(cors({ origin: "https://plataforma-de-gestao.onrender.com/", credentials: true }))
 
 const Cliente = require('./models/Cliente');
 const Produto = require('./models/Produto');
